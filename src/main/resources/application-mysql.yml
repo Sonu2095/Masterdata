@@ -1,0 +1,56 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST:10.133.104.160}:3306/amsp
+    username: app
+    password: ENC(EVrQ4mK7IxMfZqoBPTWEzoHpBPZbqqhm)
+    hikari:
+      maximum-pool-size: 10
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  mail:
+    host: mailhost.avaya.com   # Replace with your email server hostname or IP address
+    port: 25                   # Common ports: 25, 465, or 587
+    username: youremail@example.com  # Replace with your email username
+    password: yourpassword          # Replace with your email password
+    protocol: smtp
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+      mail.smtp.starttls.required: false
+
+server:
+  servlet:
+    context-path: /amsp/api/masterdata
+  port: 8080
+
+logging:
+  level:
+    com.avaya: info
+    name: DEBUG
+
+springdoc:
+  show-actuator: true
+  packages-to-scan:
+    - com.avaya.amsp.masterdata.rest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  info:
+    enabled: true
+
+scoutoutfeed:
+  output:
+    folder: /app/avaya/amsp/backend/api/cost-report/data/output
+
+security:
+  jwt:
+    secret-key: ENC(gqdK8ngVBYFio4V4tQHdWcqMn52WkmIoipbpO3IShOBBRcFycqsuz51s08qI1IzwdR+wHWt6kdnw+15tTSlbqtA/6eWAVkB4vTVteutjFfk=)
