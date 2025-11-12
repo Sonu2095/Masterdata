@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import lombok.extern.slf4j.Slf4j;
 
 
-@ControllerAdvice( assignableTypes = {PortTypeController.class, ConnectionController.class, ArticleController.class, PoolAssetController.class, TemplateConfigurationController.class , PbxClusterController.class, CalendarController.class} )
+@ControllerAdvice( assignableTypes = {PortTypeController.class, ConnectionController.class, ArticleController.class, PoolAssetController.class, TemplateConfigurationController.class , PbxClusterController.class, CalendarController.class, GetExtensionController.class} )
 @Slf4j
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 

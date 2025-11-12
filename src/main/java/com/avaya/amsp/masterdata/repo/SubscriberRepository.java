@@ -3,6 +3,7 @@ package com.avaya.amsp.masterdata.repo;
 import com.avaya.amsp.domain.Subscribers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,5 +31,7 @@ public interface SubscriberRepository extends JpaRepository<Subscribers, Long>, 
     List<String> findDistinctCurrentState();
     
     boolean existsByAreaCodeAndExtension(String areaCode, String extension);
+    
+    Optional<Subscribers> findByAreaCodeAndExtension(String areaCode, String extension);
 
 }
