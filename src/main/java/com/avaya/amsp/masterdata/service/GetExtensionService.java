@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.ZoneOffset;
+import java.sql.Timestamp;
 
 @Service
 @Slf4j
@@ -58,9 +60,9 @@ public class GetExtensionService {
         statusInfo.setReservedBy(subscriber.getFromUser() != null ? subscriber.getFromUser() : "ORDERBRIDGE");
         // Use lastVerificationAt or createdAt as reservedUntilDate, or set a default future date
         if (subscriber.getLastVerificationAt() != null) {
-            statusInfo.setReservedUntilDate(subscriber.getLastVerificationAt().toInstant());
+            statusInfo.setReservedUntilDate(convertToInstant(subscriber.getLastVerificationAt()));
         } else if (subscriber.getCreatedAt() != null) {
-            statusInfo.setReservedUntilDate(subscriber.getCreatedAt().toInstant());
+            statusInfo.setReservedUntilDate(convertToInstant(subscriber.getCreatedAt()));
         } else {
             // Default to 30 days from now if no date available
             statusInfo.setReservedUntilDate(Instant.now().plusSeconds(30L * 24 * 60 * 60));
@@ -93,6 +95,26 @@ public class GetExtensionService {
         }
         // Default fallback
         return "BCS SFB";
+    }
+
+    /**
+     * Converts Timestamp or LocalDateTime to Instant
+     * Handles both java.sql.Timestamp and java.time.LocalDateTime types
+     */
+    private Instant convertToInstant(Object timestamp) {
+        if (timestamp == null) {
+            return null;
+        }
+        
+        if (timestamp instanceof Timestamp) {
+            return ((Timestamp) timestamp).toInstant();
+        } else if (timestamp instanceof java.time.LocalDateTime) {
+            return ((java.time.LocalDateTime) timestamp).toInstant(ZoneOffset.UTC);
+        } else {
+            // Fallback: try to convert via string or use current time
+            log.warn("Unexpected timestamp type: {}, using current time", timestamp.getClass().getName());
+            return Instant.now();
+        }
     }
 }
 
