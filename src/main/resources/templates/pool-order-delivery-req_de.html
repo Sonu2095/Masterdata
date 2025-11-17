@@ -1,0 +1,151 @@
+<html>
+<head>
+<style type="text/css">
+body.main {font-family:Verdana,Times,Helvetica;font-size:11px;color:black;}
+table.main { width:100%;font-family:Verdana,Times,Helvetica;font-size:11px;color:black;table-layout:fixed; }
+table.article { width:100%;font-family:Verdana,Times,Helvetica;font-size:11px;color:black; }
+table.footer { width:100%;font-family:Verdana,Times,Helvetica;font-size:9px;color:blue;table-layout:fixed; }
+td { border:0px; vertical-align:top; overflow:hidden; }
+td.label { border:0px; vertical-align:top; overflow:hidden; white-space:nowrap; font-weight:bold; width:20%; }
+td.label_sub { border:0px; vertical-align:top; overflow:hidden; white-space:nowrap; font-weight:bold; width:20%; padding-left:30px; }
+td.std0 { width:20%; text-align:left;border:0px; vertical-align:top; overflow:hidden; }
+td.std,td.value  { border:0px; vertical-align:top; overflow:hidden; }
+td.bold { border:0px; vertical-align:top; overflow:hidden; font-weight:bold;}
+td.red { border:0px; vertical-align:top; overflow:hidden; font-weight:bold; color:#cc0000;}
+td.blue { border:0px; vertical-align:top; overflow:hidden; font-weight:bold; color:blue;}
+td.col_names, td.std, td.num , td.empty {padding:4px; border:0px; text-align:left; vertical-align:top; overflow:hidden;}
+td.col_names_l {padding:4px;text-align:left;font-weight:bold;border-top:1px solid #000000;border-bottom:2px solid #000000;border-right:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.col_names_c {padding:4px;text-align:center;font-weight:bold;border-top:1px solid #000000;border-bottom:2px solid #000000;border-right:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.col_names_r {padding:4px;text-align:right;font-weight:bold;border-top:1px solid #000000;border-bottom:2px solid #000000;border-right:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.std_l, td.num_l {padding:4px;text-align:left;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.std_c, td.num_c {padding:4px;text-align:center;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.std_r, td.num_r {padding:4px;text-align:right;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.std_l_strike {padding:4px;text-align:left;text-decoration:line-through;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.std_l_bold {padding:4px;text-align:left;font-weight:bold;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.bold_l {padding:4px;text-align:left;font-weight:bold;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.bold_c {padding:4px;text-align:center;font-weight:bold;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.bold_r {padding:4px;text-align:right;font-weight:bold;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.ital_l {padding:4px;text-align:left;font-style:italic;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.ital_c {padding:4px;text-align:center;font-style:italic;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.ital_r, td.ital_r_top {padding:4px;text-align:right;font-style:italic;border-right:1px solid #000000; border-bottom:1px solid #000000; vertical-align:top; overflow:hidden; }
+td.sum_r {padding:4px;text-align:right;font-style:italic;border:0px; vertical-align:top; overflow:hidden; }
+td.sum_r_top {padding:4px;text-align:right;font-style:italic;border-top:1px solid #000000; vertical-align:top; overflow:hidden; }
+</style>
+</head>
+
+<body>
+
+	<p th:inline="text">Dear [[${fName}]],
+	</p>
+	<p th:inline="text">
+		Many thanks for your AMSP Pool order no. <b>[[${orderNum}]]</b>. For answering your questions please contact our
+		Avaya
+		hotline:
+		Phone no. [[${hotlinePh}]] PIN [[${hotlinePin}]] or e-mail <a href="mailto:[[${hotlineEml}]]?subject=AMSP-Order no. [[${orderNum}]]" target="_blank">[[${hotlineEml}]]</a>.
+	</p>
+	<p>
+		Sincerely yours
+	</p>
+	<p>
+		The Avaya Team
+	</p>
+
+	<hr />
+	<h3 style="color: blue;">AMSP-Bestellung: Status <i>Lieferung für die Bestellung angefordert</i></h3>
+	<hr />
+	<table class="main">
+		<tr>
+			<td class="label">Email an</td>
+			<td th:text="${uEmail}">
+				<a th:href="'mailto:' + ${uEmail}" th:text="${uEmail}"></a>
+			</td>
+		</tr>
+	</table>
+	<hr />
+	<table class="main">
+		<tr>
+			<td class="label">Bestell-Nr.</td>
+			<td th:text="${orderNum}"></td>
+		</tr>
+		<tr>
+			<td class="label">Kaufdatum</td>
+			<td th:text="${orderDt}"></td>
+		</tr>
+		<tr>
+			<td class="label">Kaufzeit</td>
+			<td th:text="${orderTm}"></td>
+		</tr>
+		<tr>
+			<td class="label">SAP-Verarbeitungsdatum</td>
+			<td th:text="${sapDt}"></td>
+		</tr>
+	</table>
+	<hr />
+	<table class="main">
+		<tr>
+			<td class="label">Email</td>
+			<td th:text="${uEmail}"></td>
+		</tr>
+	</table>
+	<hr />
+	<hr />
+	<table class="main">
+		<tr>
+			<td class="label">Cluster</td>
+			<td th:text="${clusterName}"></td>
+		</tr>
+		<tr>
+			<td class="label">Site</td>
+			<td th:text="${siteName}"></td>
+		</tr>
+		<tr>
+			<td class="label">Vertrag/FL-Code</td>
+			<td th:text="${contractCode}"></td>
+		</tr>
+		<tr>
+			<td class="label">Pool</td>
+			<td th:text="${poolName}"></td>
+		</tr>
+		<tr>
+			<td class="label">Lieferadresse</td>
+			<td th:text="${shippingAddress}"></td>
+		</tr>
+	</table>
+	<hr />
+	<hr />
+	<!-- Main Loop for Orders -->
+	<div th:each="entry : ${orders}">
+		<table class="article">
+			<thead>
+				<tr>
+					<td class="col_names_l">Bestell-Transaktions-Nr.</td>
+					<td class="col_names_l">Artikel/Funktion.</td>
+					<td class="col_names_c">Menge</td>
+					<!-- todo -->
+					<td class="col_names_r">Kaufpreis</td>
+					<td class="col_names_r">Gesamtkaufpreis</td>
+					<!-- todo -->
+					<td class="col_names_r">Verkaufspreis</td> 
+					<td class="col_names_r">Gesamtverkaufspreis</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="article, status : ${entry.value}">
+					<td class="bold_l" th:if="${status.index == 0}" th:text="${entry.key}"></td>
+					<td class="bold_l" th:unless="${status.index == 0}"></td>
+					<td class="std_l_bold" th:text="${article.articleName}"></td>
+					<td class="num_c" th:text="${article.quantity}"></td>
+					<td class="std_r" th:text="${article.puPrice}"></td> <!-- todo -->
+					<td class="std_r" th:text="${article.totalPuPrice}"></td> <!-- todo -->
+					<td class="std_r" th:text="${article.saPrice}"></td>
+					<td class="std_r" th:text="${article.totalSaPrice}"></td> <!-- todo -->
+				</tr>
+			</tbody>
+		</table>
+		<hr />
+	</div>
+	<br />
+	<hr />
+</body>
+
+</html>
