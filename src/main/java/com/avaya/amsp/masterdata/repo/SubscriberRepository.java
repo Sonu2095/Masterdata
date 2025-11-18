@@ -33,5 +33,17 @@ public interface SubscriberRepository extends JpaRepository<Subscribers, Long>, 
     boolean existsByAreaCodeAndExtension(String areaCode, String extension);
     
     Optional<Subscribers> findByAreaCodeAndExtension(String areaCode, String extension);
+    
+    @Query(value = "SELECT * FROM subscribers s WHERE s.area_code = :areaCode " +
+           "AND CAST(s.extension AS UNSIGNED) >= CAST(:fromExtension AS UNSIGNED) " +
+           "AND CAST(s.extension AS UNSIGNED) <= CAST(:toExtension AS UNSIGNED) " +
+           "AND (:status IS NULL OR s.current_state = :status) " +
+           "ORDER BY CAST(s.extension AS UNSIGNED)", nativeQuery = true)
+    List<Subscribers> findByAreaCodeAndExtensionRange(
+        String areaCode, 
+        String fromExtension, 
+        String toExtension, 
+        String status
+    );
 
 }
