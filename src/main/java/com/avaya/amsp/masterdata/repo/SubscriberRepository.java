@@ -46,4 +46,8 @@ public interface SubscriberRepository extends JpaRepository<Subscribers, Long>, 
         String status
     );
 
+    @Query(value = "SELECT * FROM subscribers s WHERE s.nt_domain = :domain AND s.nt_username = :userID " +
+           "ORDER BY CAST(s.extension AS UNSIGNED)", nativeQuery = true)
+    List<Subscribers> findByDomainAndUser(String domain, String userID);
+
 }

@@ -49,7 +49,8 @@ public class SecurityConfig {
                         .requestMatchers("/", "/actuator", "/actuator/**","/actuator/*",
                                             "/languages/*","v1/languages","v1/languages/",
                                         "/swagger-ui/**","/swagger-ui","/swagger-ui/*","/v3/api-docs/**",
-                                        "/v1/getExtension", "/v1/getExtension/**").permitAll()  // TODO: Remove this in production - only for testing
+                                        "/v1/getExtension", "/v1/getExtension/**",
+                                        "/v1/listUserExtensions", "/v1/listUserExtensions/**").permitAll()
                         .anyRequest()
                         .authenticated())
                 .sessionManagement(management -> management
@@ -63,7 +64,7 @@ public class SecurityConfig {
                         String requestURI = request.getRequestURI();
                         
                         // Check if this is the getExtension endpoint (check in URI)
-                        if (requestURI != null && requestURI.contains("/v1/getExtension")) {
+                        if (requestURI != null && (requestURI.contains("/v1/getExtension") || requestURI.contains("/v1/listUserExtensions"))) {
                             // Skip JWT filter completely - just continue the chain
                             chain.doFilter(request, response);
                             return;
