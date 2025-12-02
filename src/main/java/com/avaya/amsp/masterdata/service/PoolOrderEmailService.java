@@ -74,7 +74,7 @@ public class PoolOrderEmailService implements PoolOrderEmailServiceIface {
     @Autowired
     private TemplateEngine templateEngine;
 
-    @Autowired
+    @Autowired(required = false)
     private EmailService emailService;
 
     @Autowired
@@ -181,12 +181,16 @@ public class PoolOrderEmailService implements PoolOrderEmailServiceIface {
                     // Store the file in DB.
                     storeFileToDB(body, orderItem, PoolOrderStatusCode.OPENED.name());
 
-                    emailService.sendEmail(EmailDTO.builder().to(List.of(user.getEmailAddress()))
+                    if (emailService != null) {
+                        emailService.sendEmail(EmailDTO.builder().to(List.of(user.getEmailAddress()))
                             .subject(messageSource.getMessage("email.subject.order.open",
                                     new Object[] { String.valueOf(orderNumber), username, clusterName, poolName },
                                     userLocale))
                             .body(body).build());
-                    log.debug("Task submitted to send email to {}", user.getEmailAddress());
+                        log.debug("Task submitted to send email to {}", user.getEmailAddress());
+                    } else {
+                        log.warn("EmailService bean not available; skipping sending order open email");
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -296,12 +300,16 @@ public class PoolOrderEmailService implements PoolOrderEmailServiceIface {
                     // Store the file in DB.
                     storeFileToDB(body, orderItem, PoolOrderStatusCode.WAITING_SAP.name());
 
-                    emailService.sendEmail(EmailDTO.builder().to(List.of(user.getEmailAddress()))
+                    if (emailService != null) {
+                        emailService.sendEmail(EmailDTO.builder().to(List.of(user.getEmailAddress()))
                             .subject(messageSource.getMessage("email.subject.order.approved",
                                     new Object[] { String.valueOf(orderNumber), username, clusterName, poolName },
                                     userLocale))
                             .body(body).build());
-                    log.debug("Task submitted to send email to {}", user.getEmailAddress());
+                        log.debug("Task submitted to send email to {}", user.getEmailAddress());
+                    } else {
+                        log.warn("EmailService bean not available; skipping sending order approved email");
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -406,12 +414,16 @@ public class PoolOrderEmailService implements PoolOrderEmailServiceIface {
                     // Store the file in DB.
                     storeFileToDB(body, orderItem, PoolOrderStatusCode.WAITING_SHIPPING.name());
 
-                    emailService.sendEmail(EmailDTO.builder().to(List.of(user.getEmailAddress()))
+                    if (emailService != null) {
+                        emailService.sendEmail(EmailDTO.builder().to(List.of(user.getEmailAddress()))
                             .subject(messageSource.getMessage("email.subject.order.delivery.request",
                                     new Object[] { String.valueOf(orderNumber), username, clusterName, poolName },
                                     userLocale))
                             .body(body).build());
-                    log.debug("Task submitted to send email to {}", user.getEmailAddress());
+                        log.debug("Task submitted to send email to {}", user.getEmailAddress());
+                    } else {
+                        log.warn("EmailService bean not available; skipping sending order delivery request email");
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -521,12 +533,16 @@ public class PoolOrderEmailService implements PoolOrderEmailServiceIface {
                     // Store the file in DB.
                     storeFileToDB(body, orderItem, PoolOrderStatusCode.CLOSED.name());
 
-                    emailService.sendEmail(EmailDTO.builder().to(List.of(user.getEmailAddress()))
+                    if (emailService != null) {
+                        emailService.sendEmail(EmailDTO.builder().to(List.of(user.getEmailAddress()))
                             .subject(messageSource.getMessage("email.subject.order.closed",
                                     new Object[] { String.valueOf(orderNumber), username, clusterName, poolName },
                                     userLocale))
                             .body(body).build());
-                    log.debug("Task submitted to send email to {}", user.getEmailAddress());
+                        log.debug("Task submitted to send email to {}", user.getEmailAddress());
+                    } else {
+                        log.warn("EmailService bean not available; skipping sending order closed email");
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
