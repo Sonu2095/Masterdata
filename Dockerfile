@@ -5,7 +5,7 @@ FROM docker.io/openjdk:17
 WORKDIR /app
 
 # Copy the Spring Boot JAR file into the image
-COPY samsbridge*.jar app.jar
+COPY masterdata*.jar app.jar
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]

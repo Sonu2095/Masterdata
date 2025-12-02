@@ -21,11 +21,11 @@
 			<password>${automationpassword}</password>
 		 </server> 
 	</servers>
-	<mirrors>
+	<!-- <mirrors>
 		<mirror>
 			<id>amfk2amsp-maven</id>
 			<url>https://nexus-ott.forge.avaya.com/repository/amfk2amsp-maven/</url>
 			<mirrorOf>*</mirrorOf>
 		</mirror>
-	</mirrors>			
+	</mirrors>			 -->
 </settings>  

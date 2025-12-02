@@ -1,5 +1,8 @@
+.classpath
+.factorypath
+.project
+.settings/
+target/
+*.log
+logs/
 *~
-/.idea/
-/target/
-sams-api-proxy/node_modules
-sams-api-proxy/logs
