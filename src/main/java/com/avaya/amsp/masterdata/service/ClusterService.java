@@ -205,14 +205,10 @@ public class ClusterService implements ClusterServiceIface {
 		clusterRecord.ifPresentOrElse(value -> {
 			//before updating with new name 
 			
-			String newName = clusterDto.getName();
-		    // Only updating oldname if the name is actually changing
-		    if (newName != null && !newName.equals(value.getName())) {
-		        if (value.getOldName() == null) {
-		            value.setOldName(value.getName());
-		        }
-		        value.setName(newName);
-		    }
+            String newName = clusterDto.getName();
+            if (newName != null && !newName.equals(value.getName())) {
+                value.setName(newName);
+            }
 			
 			value.setRemark(clusterDto.getRemark());
 			value.setLogUpdatedOn(new Timestamp(System.currentTimeMillis()));
