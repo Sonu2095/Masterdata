@@ -1,66 +1,48 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ENC(EVrQ4mK7IxMfZqoBPTWEzoHpBPZbqqhm)
     url: jdbc:mysql://${MYSQL_HOST:10.133.104.160}:3306/amsp
     username: app
-    password: ENC(EVrQ4mK7IxMfZqoBPTWEzoHpBPZbqqhm)
     hikari:
-      maximum-pool-size: 10
-
+      maximum-pool-size: 1
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
-
-  mail:
-    host: mailhost.avaya.com   # Replace with your email server hostname or IP address
-    port: 25                   # Common ports: 25, 465, or 587
-    username: youremail@example.com  # Replace with your email username
-    password: yourpassword          # Replace with your email password
-    protocol: smtp
-    properties:
-      mail.smtp.auth: false
-      mail.smtp.starttls.enable: false
-      mail.smtp.starttls.required: false
-
-server:
-  servlet:
-    context-path: /amsp/api/masterdata
-  port: 8080
-
-logging:
-  level:
-    com.avaya: info
-    name: DEBUG
-
-springdoc:
-  show-actuator: true
-  packages-to-scan:
-    - com.avaya.amsp.masterdata.rest
+        dialect: org.hibernate.dialect.MySQLDialect
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-  info:
-    enabled: true
-
-scoutoutfeed:
-  output:
-    folder: /app/avaya/amsp/backend/api/cost-report/data/output
-
+    info:
+      enabled: true
+server:
+  servlet:
+    context-path: /amsp/api/sams
+  port: 8082
+  
 security:
-  jwt:
-    secret-key: ENC(gqdK8ngVBYFio4V4tQHdWcqMn52WkmIoipbpO3IShOBBRcFycqsuz51s08qI1IzwdR+wHWt6kdnw+15tTSlbqtA/6eWAVkB4vTVteutjFfk=)
+       jwt:
+         secret-key: ENC(gqdK8ngVBYFio4V4tQHdWcqMn52WkmIoipbpO3IShOBBRcFycqsuz51s08qI1IzwdR+wHWt6kdnw+15tTSlbqtA/6eWAVkB4vTVteutjFfk=)
+services:
+  endpoints:
+    fetch-pbx-by-area-code: http://localhost:8080/amsp/api/masterdata/v1/pbxcluster/%s
+    auth-token: http://linpubah160.gl.avaya.com:8082/amsp/api/auth/v1/login
+    fetch-articles: http://localhost:8080/amsp/api/masterdata/v1/connections/%s/cluster/%s/articles
+    open-sams-order:  http://localhost:8083/amsp/api/order/v1/sams-order
+    fetch-sams-order: http://localhost:8083/amsp/api/order/v1/sams-order/%s
+    delete-sams-order: http://localhost:8083/amsp/api/order/v1/sams-order
+    change-sams-order: http://localhost:8083/amsp/api/order/v1/sams-order
+    fetch-subscriber: http://localhost:8084/amsp/api/subscriber/v1/udmviews/subscriber/%s/%s
+    fetch-connections-by-cluster-id: http://localhost:8080/amsp/api/masterdata/v1/clusters/%s/connections
 
+  sams-account-username: shdhumal
+  sams-account-pass: ENC(PiA5pIdvXgZCHpmywYOGJdX/9fNUbFul)
 
-JASYPT_ENCRYPTOR_PASSWORD: MySecretKey
-JASYPT.ENCRYPTOR.ALGORITHM: PBEWithMD5AndDES
-
-
-jwt:
-  secret: your-secret-key
-  expiration: 3600000
-  refreshExpiration: 86400000
+sams:
+  api:
+    key: ENC(q5ULcbTpVeHNqrehiq9yN6o5fIsDO7nL)
