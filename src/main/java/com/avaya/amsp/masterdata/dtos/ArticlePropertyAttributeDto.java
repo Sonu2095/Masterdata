@@ -36,7 +36,7 @@ public class ArticlePropertyAttributeDto {
 
 	@Min(value = 0, message = "pseudoFlag should have value either 0 or 1")
 	@Max(value = 1, message = "pseudoFlag should have value either 0 or 1")
-	private Boolean subscriberSwap;
+	private Boolean alwaysChange;
 
 	private Long quantity;
 	private Long bcsId;

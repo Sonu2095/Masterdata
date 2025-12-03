@@ -1,6 +1,5 @@
 package com.avaya.amsp.masterdata.service;
 
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.avaya.amsp.domain.ClusterItem;
 import com.avaya.amsp.domain.Country;
@@ -85,13 +83,8 @@ public class PbxClusterService implements PbxClusterServiceIface {
 	@Override
 	@PBXTechAuditLog(action = "update",entity = "PbxCluster",functionality = "PBX update existing PbxCluster")
 	@org.springframework.transaction.annotation.Transactional
-	public String savePbxCluster(PbxClusterDto pbxClusterDto) {
+	public long savePbxCluster(PbxClusterDto pbxClusterDto) {
 		//PbxCluster pbxCluster = mapper.map(pbxClusterDto, PbxCluster.class);
-		Long pbxId = pbxClusterDto.getId();
-		Long pbxClusterID = pbxClusterRepo.findByPbxId(pbxId);
-		if(pbxClusterID != null && (pbxClusterID.intValue() == pbxId.intValue())) {
-			return "pbxcluster number alreday exist " + pbxClusterDto.getId();
-		}
 		PbxCluster pbxCluster = new PbxCluster();
 		pbxCluster.setName(pbxClusterDto.getName());
 		pbxCluster.setAreacode(pbxClusterDto.getAreacode());
@@ -108,22 +101,21 @@ public class PbxClusterService implements PbxClusterServiceIface {
 		pbxCluster.setLogCreatedOn(LocalDateTime.now());
 		pbxCluster.setActive(1);
 		PbxCluster savedPbxCluster = pbxClusterRepo.save(pbxCluster);
-		return "pbxcluster id created "+savedPbxCluster.getId();
+		return savedPbxCluster.getId();
 	}
 
 	@Override
-	@PBXTechAuditLog(action = "update", entity = "PbxCluster", functionality = "PBX update existing PbxCluster")
-	@Transactional
+	@PBXTechAuditLog(action = "update",entity = "PbxCluster",functionality = "PBX update existing PbxCluster")
 	public PbxClusterDto updatePbxCluster(PbxClusterDto pbxClusterDto) {
 		PbxCluster pbxCluster = pbxClusterRepo.getReferenceById(pbxClusterDto.getId());
-	    pbxCluster.setClusterItem(clusterRepo.getReferenceById(pbxClusterDto.getClusterItem().getId()));
-	    pbxCluster.setCountry(countryRepo.getReferenceById(pbxClusterDto.getCountry().getId()));
-	    BeanUtils.copyProperties(pbxClusterDto, pbxCluster, "logCreatedOn", "logCreatedBy");
-	    pbxCluster.setLogUpdatedOn(LocalDateTime.now());
-	    log.info("Updating pbxCluster with ID {}: {}", pbxCluster.getId(), pbxCluster);
-	    return mapper.map(pbxCluster, PbxClusterDto.class);
+		pbxCluster.setClusterItem(clusterRepo.getReferenceById(pbxClusterDto.getClusterItem().getId()));
+		pbxCluster.setCountry(countryRepo.getReferenceById(pbxClusterDto.getCountry().getId()));
+		BeanUtils.copyProperties(pbxClusterDto, pbxCluster, new String[] { "logCreatedOn", "logCreatedBy" });
+		pbxCluster.setLogUpdatedOn(LocalDateTime.now());
+		log.info("Updating pbxCluster as {}", pbxCluster);
+		pbxCluster = pbxClusterRepo.save(pbxCluster);
+		return mapper.map(pbxCluster, PbxClusterDto.class);
 	}
-
 
 	@Override
 	public List<PbxNumberLockDto> fetchAllNumberLockByPbxCluser(Long idPbxCluster) {

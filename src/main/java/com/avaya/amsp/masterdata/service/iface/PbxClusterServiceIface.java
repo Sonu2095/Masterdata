@@ -8,7 +8,7 @@ public interface PbxClusterServiceIface {
 
 	List<PbxClusterDto> fetchAllPbxClusters();
 
-	String savePbxCluster(PbxClusterDto pbxClusterDto);
+	long savePbxCluster(PbxClusterDto pbxClusterDto);
 
 	PbxClusterDto updatePbxCluster(PbxClusterDto pbxClusterDto);
 

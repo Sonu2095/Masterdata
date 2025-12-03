@@ -5,7 +5,7 @@ import com.avaya.amsp.masterdata.dtos.PbxSystemDto;
 
 public interface PbxNumberLockServiceIface {
 
-	String savePbxNumberLock(PbxNumberLockDto pbxNumberLockDto);
+	long savePbxNumberLock(PbxNumberLockDto pbxNumberLockDto);
 
 	void updatePbxNumberLock(PbxNumberLockDto pbxNumberLockDto);
 	

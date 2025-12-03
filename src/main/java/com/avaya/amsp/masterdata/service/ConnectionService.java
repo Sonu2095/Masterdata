@@ -1,7 +1,6 @@
 package com.avaya.amsp.masterdata.service;
 
 import java.sql.Timestamp;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -11,6 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.apache.commons.compress.utils.Lists;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -303,8 +303,7 @@ public class ConnectionService implements ConnectionServiceIface {
 				artConn.setArticle(article);
 				artConn.setConnection(conn);
 				artConn.setQuantity(1);
-                
-				
+				artConn.setAlwaysChange(false);
 				artConn.setAlwaysDelete(false);
 				artConn.setAlwaysInsert(false);
 				artConn.setAlwaysMove(false);
@@ -608,8 +607,7 @@ public class ConnectionService implements ConnectionServiceIface {
 							}
 
 							nonSubArticleDto.setObligatory(articleConn.getObligatory());
-                            nonSubArticleDto.setSubscriberSwap(getSubscriberSwapFromEntity(articleConn));
-							
+							nonSubArticleDto.setAlwaysChange(articleConn.getAlwaysChange());
 							nonSubArticleDto.setAlwaysDelete(articleConn.getAlwaysDelete());
 							nonSubArticleDto.setAlwaysInsert(articleConn.getAlwaysInsert());
 							nonSubArticleDto.setAlwaysMove(articleConn.getAlwaysMove());
@@ -671,8 +669,7 @@ public class ConnectionService implements ConnectionServiceIface {
 					subArticleDto.setRemark(((ArticleCluster) dataList.get()).getDescription());
 					subArticleDto.setSingle(((ArticleCluster) dataList.get()).getSingleArticle());
 					subArticleDto.setObligatory(articleConnectionRecord.getObligatory());
-                    subArticleDto.setSubscriberSwap(getSubscriberSwapFromEntity(articleConnectionRecord));
-					
+					subArticleDto.setAlwaysChange(articleConnectionRecord.getAlwaysChange());
 					subArticleDto.setAlwaysDelete(articleConnectionRecord.getAlwaysDelete());
 					subArticleDto.setAlwaysInsert(articleConnectionRecord.getAlwaysInsert());
 					subArticleDto.setAlwaysMove(articleConnectionRecord.getAlwaysMove());
@@ -719,8 +716,8 @@ public class ConnectionService implements ConnectionServiceIface {
 						articleClusterDto1.setAssemblyReq(
 								((ArticleCluster) dataList1.get()).getAssemblingAddress() == 1 ? true : false);
 						///
-                        articleClusterDto1.setObligatory(mapping.getArticleConn().getObligatory());
-                        articleClusterDto1.setSubscriberSwap(getSubscriberSwapFromEntity(mapping.getArticleConn()));
+						articleClusterDto1.setObligatory(mapping.getArticleConn().getObligatory());
+						articleClusterDto1.setAlwaysChange(mapping.getArticleConn().getAlwaysChange());
 						articleClusterDto1.setAlwaysDelete(mapping.getArticleConn().getAlwaysDelete());
 						articleClusterDto1.setAlwaysInsert(mapping.getArticleConn().getAlwaysInsert());
 						articleClusterDto1.setAlwaysMove(mapping.getArticleConn().getAlwaysMove());
@@ -790,12 +787,10 @@ public class ConnectionService implements ConnectionServiceIface {
 										articleProp.getArticleId(), connectionId)));
 				articleConn.setObligatory(articleProp.getObligatory());
 				articleConn.setAlwaysInsert(articleProp.getAlwaysInsert());
-                articleConn.setAlwaysMove(articleProp.getAlwaysMove());
-                articleConn.setAlwaysDelete(articleProp.getAlwaysDelete());
-                setSubscriberSwapIfSupported(articleConn, articleProp.getSubscriberSwap());
-                
-                
-                articleConn.setQuantity(articleProp.getQuantity());
+				articleConn.setAlwaysMove(articleProp.getAlwaysMove());
+				articleConn.setAlwaysDelete(articleProp.getAlwaysDelete());
+				articleConn.setAlwaysChange(articleProp.getAlwaysChange());
+				articleConn.setQuantity(articleProp.getQuantity());
 				Connection connect = new Connection();
 				connect.setId(articleProp.getBcsId());
 				articleConn.setConnectionBcs(connect);
@@ -809,7 +804,6 @@ public class ConnectionService implements ConnectionServiceIface {
 		});
 	}
 
-	
 	@Override
 	public List<ClusterDto> fetchClustersByConnection(long connectionId) {
 		log.info("fetching clusters for connection {}", connectionId);
@@ -940,7 +934,7 @@ public class ConnectionService implements ConnectionServiceIface {
 		Set<PoolDto> listOfPools = siteService.getPoolsForSite(siteId);
 		log.info("size listOfPools: " + listOfPools.size()); //5
 		log.info("languageId: " + languageId);
-		List<PoolDto> listPool = new ArrayList<>(listOfPools);
+		
 		Site site = siteService.getSiteById(siteId);
 		
 		//TODO: Populate site_i18n_name table first before using this code
@@ -1061,8 +1055,7 @@ public class ConnectionService implements ConnectionServiceIface {
 			                    }
 
 			                    articleInPool.setObligatory(articleConnectionRecord.getObligatory());
-                            articleInPool.setSubscriberSwap(getSubscriberSwapFromEntity(articleConnectionRecord));
-			                    
+			                    articleInPool.setAlwaysChange(articleConnectionRecord.getAlwaysChange());
 			                    articleInPool.setAlwaysDelete(articleConnectionRecord.getAlwaysDelete());
 			                    articleInPool.setAlwaysInsert(articleConnectionRecord.getAlwaysInsert());
 			                    articleInPool.setAlwaysMove(articleConnectionRecord.getAlwaysMove());
@@ -1275,39 +1268,17 @@ public class ConnectionService implements ConnectionServiceIface {
 			article.setCurrency("DOLLAR");
 		}
 
-        article.setObligatory(articleConnection.getObligatory());
-        article.setSubscriberSwap(getSubscriberSwapFromEntity(articleConnection));
+		article.setObligatory(articleConnection.getObligatory());
+		article.setAlwaysChange(articleConnection.getAlwaysChange());
+		article.setAlwaysDelete(articleConnection.getAlwaysDelete());
+		article.setAlwaysInsert(articleConnection.getAlwaysInsert());
+		article.setAlwaysMove(articleConnection.getAlwaysMove());
+		article.setQuantity(articleConnection.getQuantity());
 
-        article.setAlwaysDelete(articleConnection.getAlwaysDelete());
-        article.setAlwaysInsert(articleConnection.getAlwaysInsert());
-        article.setAlwaysMove(articleConnection.getAlwaysMove());
-        article.setQuantity(articleConnection.getQuantity());
+		article.setShippingReq(articleCluster.getShippingAddress() == 1 ? true : false);
+		article.setAssemblyReq(articleCluster.getAssemblingAddress() == 1 ? true : false);
 
-        article.setShippingReq(articleCluster.getShippingAddress() == 1 ? true : false);
-        article.setAssemblyReq(articleCluster.getAssemblingAddress() == 1 ? true : false);
-
-        return article;
-    }
-
-    private Boolean getSubscriberSwapFromEntity(com.avaya.amsp.domain.ArticleConnection entity) {
-        try {
-            Method getter = entity.getClass().getMethod("getSubscriberSwap");
-            Object val = getter.invoke(entity);
-            if (val instanceof Boolean) {
-                return (Boolean) val;
-            }
-        } catch (Exception ignored) {
-        }
-        return null;
-    }
-
-    private void setSubscriberSwapIfSupported(com.avaya.amsp.domain.ArticleConnection entity, Boolean value) {
-        if (value == null) return;
-        try {
-            Method setter = entity.getClass().getMethod("setSubscriberSwap", Boolean.class);
-            setter.invoke(entity, value);
-        } catch (Exception ignored) {
-        }
-    }
+		return article;
+	}
 
 }

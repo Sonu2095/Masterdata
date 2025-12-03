@@ -10,8 +10,18 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
 @SpringBootApplication( scanBasePackages = {"com.avaya.amsp"} )
-@EnableJpaRepositories( basePackages = {"com.avaya.amsp.masterdata.repo"} )
-@EntityScan( basePackages = {"com.avaya.amsp.domain"} )
+@EnableJpaRepositories(
+    basePackages = {
+        "com.avaya.amsp.masterdata.repo",
+        "com.avaya.amsp.auth.common.repo"
+    }
+)
+@EntityScan(
+    basePackages = {
+        "com.avaya.amsp.domain",
+        "com.avaya.amsp.auth.common.entity"
+    }
+)
 @EnableMethodSecurity
 @EnableCaching
 @Slf4j

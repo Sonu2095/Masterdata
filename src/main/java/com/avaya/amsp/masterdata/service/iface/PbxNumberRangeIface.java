@@ -9,7 +9,7 @@ public interface PbxNumberRangeIface {
 
 	List<PbxNumberRangeDto> fetchAllPbxNumberRange();
 
-	public String createPbxNumberRange(PbxNumberRangeDto pbxNumberRangeDto);
+	public void createPbxNumberRange(PbxNumberRangeDto pbxNumberRangeDto);
 
 	public void updatePbxNumberRange(PbxNumberRangeDto pbxNumberRangeDto);
 

@@ -69,7 +69,7 @@ public class PbxClusterController {
 	public ResponseEntity<Object> savePbxCluster(@RequestBody PbxClusterDto pbxClusterDto, @AuthenticationPrincipal AMSPUser amspUser) {
 		log.info("Saving pbxCluster : {}", pbxClusterDto);
 		pbxClusterDto.setLogCreatedBy(amspUser.getUsername());
-		String id = pbxClusterService.savePbxCluster(pbxClusterDto);
+		long id = pbxClusterService.savePbxCluster(pbxClusterDto);
 		return ResponseEntity.status(HttpStatus.OK).body(id);
 	}
 

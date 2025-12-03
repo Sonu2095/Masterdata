@@ -37,15 +37,8 @@ public class PbxNumberLockService implements PbxNumberLockServiceIface {
 
 	@PBXTechAuditLog(action = "update",entity = "PbxNumberLock",functionality = "PBX update existing Phone Number Lock")
 	@Override
-	public String savePbxNumberLock(PbxNumberLockDto pbxNumberLockDto) {
-		if(pbxNumberLockDto.getId()==null) {
-			throw new IllegalArgumentException("pbxNumberLock ID cannot be null");
-		}
-		Long inputId = pbxNumberLockDto.getId();
-		Long existingPbxNumber = pbxNumberLockRepo.getPbxNumber(inputId);
-		if(existingPbxNumber!= null && existingPbxNumber == inputId) {
-			return String.format("PBX number Lock ID %d already exists.", inputId);
-		}
+	public long savePbxNumberLock(PbxNumberLockDto pbxNumberLockDto) {
+		// TODO Auto-generated method stub
 		PbxCluster pbxcluster = null;
 		log.info("Saving pbxNumberLock {}", pbxNumberLockDto);
 		
@@ -72,7 +65,7 @@ public class PbxNumberLockService implements PbxNumberLockServiceIface {
 		pnl.setLogCreatedOn(new Timestamp(System.currentTimeMillis()));
 		
 		PbxNumberLock savedPsp = pbxNumberLockRepo.save(pnl);
-		 return "pbxnumberLock Id created " +savedPsp.getId();
+		return savedPsp.getId();
 	}
 
 	@PBXTechAuditLog(action = "update",entity = "PbxNumberLock",functionality = "PBX update existing Phone Number Lock")
@@ -107,7 +100,6 @@ public class PbxNumberLockService implements PbxNumberLockServiceIface {
 			value.setPhoneNumber(pbxNumberLockDto.getPhoneNumber());
 			value.setFreePbxSync(pbxNumberLockDto.isFreePbxSync());
 			value.setReason(pbxNumberLockDto.getReason());
-			value.setLogUpdatedBy(pbxNumberLockDto.getLogUpdatedBy());
 			value.setLogUpdatedOn(new Timestamp(System.currentTimeMillis()));
 			PbxNumberLock savedPsp = pbxNumberLockRepo.save(value);
 			log.info("Number Lock record updated {} %s ", savedPsp);

@@ -203,13 +203,7 @@ public class ClusterService implements ClusterServiceIface {
 
 		Optional<ClusterItem> clusterRecord = clusterRepo.findById(clusterDto.getId());
 		clusterRecord.ifPresentOrElse(value -> {
-			//before updating with new name 
-			
-            String newName = clusterDto.getName();
-            if (newName != null && !newName.equals(value.getName())) {
-                value.setName(newName);
-            }
-			
+			value.setName(clusterDto.getName());
 			value.setRemark(clusterDto.getRemark());
 			value.setLogUpdatedOn(new Timestamp(System.currentTimeMillis()));
 			value.setLogUpdatedBy(clusterDto.getLogUpdatedBy());

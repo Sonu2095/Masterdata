@@ -43,8 +43,8 @@ public class ArticlePropertiesDto {
 
 	@Min(value = 0, message = "pseudoFlag should have value either 0 or 1")
 	@Max(value = 1, message = "pseudoFlag should have value either 0 or 1")
-	private Boolean subscriberSwap;
-	
+	private Boolean alwaysChange;
+
 	private ArticleClearingTypeEnum articleClearingType;
 	private Long quantity;
 	private Long bcsId;
@@ -66,7 +66,5 @@ public class ArticlePropertiesDto {
 	private String siteKey;
 	
 	private Boolean shippingReq;
-    private Boolean assemblyReq;
-    
+	private Boolean assemblyReq;
 }
-

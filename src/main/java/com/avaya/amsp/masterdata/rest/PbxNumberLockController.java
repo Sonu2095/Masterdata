@@ -34,7 +34,7 @@ public class PbxNumberLockController {
 	public ResponseEntity<Object> savePbxNumberLock(@RequestBody PbxNumberLockDto pbxNumberLockDto, @AuthenticationPrincipal AMSPUser amspUser) {
 		log.info("Saving pbxNumberLock : {}", pbxNumberLockDto);
 		pbxNumberLockDto.setLogCreatedBy(amspUser.getUsername());
-		String id = pbxNumberLockService.savePbxNumberLock(pbxNumberLockDto);
+		long id = pbxNumberLockService.savePbxNumberLock(pbxNumberLockDto);
 		return ResponseEntity.status(HttpStatus.OK).body(id);		
 	}
 	

@@ -25,8 +25,4 @@ public interface PbxClusterRepository extends JpaRepository<PbxCluster, Long> {
 	
 	@Query(value="select name from pbx_cluster where id= :pbxClusterId and active=1")
 	public String getClusterName(int pbxClusterId);
-	
-	@Query(value ="select id from pbx_cluster where id= :id")
-	public Long findByPbxId(Long id);
-	
 }

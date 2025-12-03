@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.avaya.amsp.masterdata.config;
 
@@ -21,7 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.avaya.amsp.security.config.JwtAuthenticationFilter;
 
 /**
- * 
+ *
  */
 @Configuration
 @EnableWebSecurity
@@ -29,7 +29,7 @@ public class SecurityConfig {
 
     @Autowired
     private AuthenticationProvider authenticationProvider;
-    
+
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -65,6 +65,6 @@ public class SecurityConfig {
 
         return source;
     }
-    
+
 
 }

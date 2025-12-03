@@ -1,8 +1,2 @@
-.classpath
-.factorypath
-.project
-.settings/
-target/
-*.log
-logs/
 *~
+/target/

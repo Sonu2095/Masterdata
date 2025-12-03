@@ -32,7 +32,6 @@ import com.avaya.amsp.masterdata.repo.PbxNumberLockRepository;
 import com.avaya.amsp.masterdata.repo.PbxNumberRangeRepository;
 import com.avaya.amsp.masterdata.service.iface.PbxNumberRangeIface;
 
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -184,19 +183,13 @@ public class PbxNumberRangeService implements PbxNumberRangeIface {
 
 	@PBXTechAuditLog(action = "insert",entity = "PbxNumberRange",functionality = "PBX Add New Phone Number Range")
 	@Override
-	public String createPbxNumberRange(PbxNumberRangeDto pbxNumberRangeDto) {
-		Long inputId = pbxNumberRangeDto.getId();
-		Long existingPbxNumber = pbxNumberRangeRepo.fetchPbxNumberRange(inputId);
-		if (existingPbxNumber != null && (existingPbxNumber.intValue() == inputId.intValue())) {
-			return String.format("PBX number range ID %d already exists.", inputId);
-		}
+	public void createPbxNumberRange(PbxNumberRangeDto pbxNumberRangeDto) {
+
 		log.info("adding new pbx range to database");
 		PbxNumberRange pbxRecord = mapper.map(pbxNumberRangeDto, PbxNumberRange.class);
-		if (pbxNumberRangeDto.getPbxClusterId() == 0) { 
-			return "PbxClusterId zero not applicable "+ pbxNumberRangeDto.getPbxClusterId();
-		}
-		 pbxRecord.setIdPbxCluster(pbxNumberRangeDto.getPbxClusterId());
-		if (pbxNumberRangeDto.getPbxId() != null) { 
+		pbxRecord.setIdPbxCluster(pbxNumberRangeDto.getPbxClusterId());
+
+		if (pbxNumberRangeDto.getPbxId() != null) {
 			pbxRecord.setIdPbxSystem(pbxNumberRangeDto.getPbxId());
 		}
 
@@ -214,7 +207,7 @@ public class PbxNumberRangeService implements PbxNumberRangeIface {
 
 		PbxNumberRange pbxRecordData = pbxNumberRangeRepo.save(pbxRecord);
 		log.info("pbx number range added  {}", pbxRecordData.getId());
-		return "pbx number range created " + pbxRecordData.getId();
+
 	}
 
 	@PBXTechAuditLog(action = "update",entity = "PbxNumberRange",functionality = "PBX update existing Phone Number Range")
@@ -230,7 +223,7 @@ public class PbxNumberRangeService implements PbxNumberRangeIface {
 				value.setIdPbxCluster(pbxNumberRangeDto.getPbxClusterId());
 				value.setIdPbxSystem(pbxNumberRangeDto.getPbxId());
 				value.setLogUpdatedBy(pbxNumberRangeDto.getLogUpdatedBy());
-				value.setLogUpdatedOn(new Timestamp(System.currentTimeMillis()));
+				value.setLogCreatedOn(new Timestamp(System.currentTimeMillis()));
 				value.setRemark(pbxNumberRangeDto.getRemark());
 				value.setRangeFrom(pbxNumberRangeDto.getRangeFrom());
 				value.setRangeTo(pbxNumberRangeDto.getRangeTo());
@@ -250,49 +243,7 @@ public class PbxNumberRangeService implements PbxNumberRangeIface {
 					String.format("pbx record with Id %s not found ", pbxNumberRangeDto.getId()));
 		});
 	}
-    
-	/*@PBXTechAuditLog(
-		    action = "update",
-		    entity = "PbxNumberRange",
-		    functionality = "PBX update existing Phone Number Range"
-		)
-		@Override
-		@Transactional  // Important: ensure this method is transactional
-		public void updatePbxNumberRange(PbxNumberRangeDto pbxNumberRangeDto) {
-		    log.info("Updating PBX number range record with ID {}", pbxNumberRangeDto.getId());
 
-		    Optional<PbxNumberRange> pbxRecordOpt = pbxNumberRangeRepo.findById(pbxNumberRangeDto.getId());
-
-		    pbxRecordOpt.ifPresentOrElse(record -> {
-		        if (record.getActive() != 0) {
-
-		            // Update entity fields directly
-		            record.setIdPbxCluster(pbxNumberRangeDto.getPbxClusterId());
-		            record.setIdPbxSystem(pbxNumberRangeDto.getPbxId());
-		            record.setLogUpdatedBy(pbxNumberRangeDto.getLogUpdatedBy());
-		            record.setLogCreatedOn(new Timestamp(System.currentTimeMillis()));
-		            record.setRemark(pbxNumberRangeDto.getRemark());
-		            record.setRangeFrom(pbxNumberRangeDto.getRangeFrom());
-		            record.setRangeTo(pbxNumberRangeDto.getRangeTo());
-
-		            // Update relationship
-		            PbxPhoneNumberType phoneType = new PbxPhoneNumberType();
-		            phoneType.setId(pbxNumberRangeDto.getPhoneNumType());
-		            record.setPhoneNumberType(phoneType);
-
-		            // No need to call save() here — Hibernate will flush automatically
-		            log.info("PBX record with ID {} updated successfully", record.getId());
-
-		        } else {
-		            log.info("Record is present but inactive; cannot update this record.");
-		        }
-		    }, () -> {
-		        log.warn("PBX record not found for ID {}", pbxNumberRangeDto.getId());
-		        throw new ResourceNotFoundException(
-		            String.format("PBX record with ID %s not found", pbxNumberRangeDto.getId())
-		        );
-		    });
-		}*/
 	@PBXTechAuditLog(action = "delete",entity = "PbxNumberRange",functionality = "PBX delete Phone Number Range")
 	@Override
 	public void deletePbxNumberRange(Long pbxId) {

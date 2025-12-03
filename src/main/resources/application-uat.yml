@@ -1,0 +1,53 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ENC(tX35/8SH4nke2vZQ6AaXx1DZce6+673d)
+    url: jdbc:mysql://${MYSQL_HOST:10.58.49.246}:3306/amsp
+    username: amsp_user
+    hikari:
+      maximum-pool-size: 10
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql=true
+  
+  liquibase:
+    enabled: false
+
+  mail:
+    host: mailhost.avaya.com  # Replace with your email server hostname or IP address
+    port: 25               # Replace with your email server port (common ports are 25, 465, or 587)
+    username: jnanjundaiah # Replace with your email username
+    password: b9fe100afa63d2106ca84a1f45f08092534524676fe698e19c96078e3d2a114f  # Replace with your email password
+#   properties:
+#      mail.smtp.auth: true  # Set to true if your email server requires authentication
+#      mail.smtp.starttls.enable: true  # Set to true to enable STARTTLS encryption
+    protocol: smtp
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+      mail.smtp.starttls.required: false
+server:
+  servlet:
+    context-path: /amsp/api/masterdata
+  port: 8086
+logging:
+  level:
+    com:
+      avaya: info
+    name: DEBUG
+springdoc:
+  show-actuator: true
+  packages-to-scan:
+  - com.avaya.amsp.masterdata.rest
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    info:
+      enabled: true
+security:
+       jwt:
+         secret-key: ENC(gqdK8ngVBYFio4V4tQHdWcqMn52WkmIoipbpO3IShOBBRcFycqsuz51s08qI1IzwdR+wHWt6kdnw+15tTSlbqtA/6eWAVkB4vTVteutjFfk=)

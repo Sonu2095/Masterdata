@@ -50,8 +50,8 @@ public class PbxPhoneNumberRangeController {
 
 		log.info("request received to create a new pbx number range{}", request);
 		request.setLogCreatedBy(amspUser.getUsername());
-		String message = pbxNumberRangeService.createPbxNumberRange(request);
-		return ResponseEntity.status(HttpStatus.CREATED).body(message);
+		pbxNumberRangeService.createPbxNumberRange(request);
+		return ResponseEntity.status(HttpStatus.CREATED).body("");
 
 	}
 

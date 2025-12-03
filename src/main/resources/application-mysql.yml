@@ -58,3 +58,9 @@ security:
 
 JASYPT_ENCRYPTOR_PASSWORD: MySecretKey
 JASYPT.ENCRYPTOR.ALGORITHM: PBEWithMD5AndDES
+
+
+jwt:
+  secret: your-secret-key
+  expiration: 3600000
+  refreshExpiration: 86400000
